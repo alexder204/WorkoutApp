@@ -1,36 +1,56 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Basic JS App</title>
+  <meta charset="UTF-8">
+  <title>Workout Level-Up App</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f9f9f9;
-      color: #333;
+    body { font-family: Arial; padding: 20px; }
+    .stat { margin-bottom: 20px; }
+    .bar {
+      background: #ddd;
+      border-radius: 8px;
+      overflow: hidden;
+      height: 20px;
+      width: 300px;
     }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
+    .fill {
+      height: 100%;
+      background: limegreen;
+      width: 0%;
+      transition: width 0.3s;
     }
   </style>
 </head>
 <body>
 
-  <h1>Welcome to My Basic JS App</h1>
-  <p id="message">Click the button to see a message.</p>
-  <button id="myButton">Click me!</button>
+  <h1>Workout Tracker</h1>
+
+  <div class="stat">
+    <h2>Strength: <span id="strength-level">0</span></h2>
+    <div class="bar"><div id="strength-bar" class="fill"></div></div>
+    <button onclick="doExercise('pushup')">Do Push-Up</button>
+  </div>
 
   <script>
-    const button = document.getElementById('myButton');
-    const message = document.getElementById('message');
+    let strengthXP = parseInt(localStorage.getItem('strengthXP')) || 0;
+    let level = 0;
 
-    button.addEventListener('click', () => {
-      message.textContent = 'Hello! You clicked the button.';
-    });
+    function updateUI() {
+      level = Math.floor(strengthXP / 10); // Level up every 10 XP
+      document.getElementById('strength-level').textContent = level;
+      document.getElementById('strength-bar').style.width = (strengthXP % 10) * 10 + '%';
+    }
+
+    function doExercise(type) {
+      if (type === 'pushup') {
+        strengthXP += 1;
+        localStorage.setItem('strengthXP', strengthXP);
+        updateUI();
+      }
+    }
+
+    updateUI();
   </script>
 
 </body>
